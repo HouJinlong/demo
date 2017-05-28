@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>借百度爸爸下蛋</title>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <script src="https://cdn.bootcss.com/vue/2.3.3/vue.min.js"></script>
+    <script src="../vue-resource.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html{
+            width: 100%;
+            height: 100%;
+            background: url("images/bg.jpg") no-repeat;
+            background-size:100% 100%;
+            font-family: serif,Helvetica,微软雅黑;
+        }
+        #box{
+           margin: 150px auto;
+            max-width: 400px;
+            height: 300px;
+            text-align: center;
+            position: relative;
+        }
+        #box:after,#box:before{
+            content: '';
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            box-shadow:none;
+        }
+        #box:after{
+            border-top: 1px solid #fff;
+            border-right: 1px solid #fff;
+            right: 0;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            transition: width 1s 3s, height 3s, box-shadow 1s 6s,border-color .3s 6s;
+        }
+        #box:before{
+            border-left: 1px solid #fff;
+            border-bottom: 1px solid #fff;
+            left: -1px;
+            top: -1px;
+            width: 0;
+            height: 0;
+            transition: width 1s 5s, height 1s 4s, box-shadow 1s 6s,border-color .3s 6s;
+        }
+        #box.hover:after,#box.hover:before{
+            border-color:transparent;
+            width: 100%;
+            height: 100%;
+            box-shadow: 0 0 2px 1px #52b8ca,0 0 2px 1px #52b8ca inset;
+        }
+        #box div.main input[type=text]{
+            display: inline-block;
+            height: 33px;
+            outline: 0 none;
+            border: 0;
+            font-size: 18px;
+            width: 300px;
+            padding:2px 10px;
+            background: none !important;
+        }
+        ::-webkit-input-placeholder { /* WebKit browsers */
+            color: #52b8ca;
+        }
+        :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+            color: #52b8ca;
+        }
+        ::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: #52b8ca;
+        }
+        :-ms-input-placeholder { /* Internet Explorer 10+ */
+            color: #52b8ca;
+        }
+        #box div.main{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+        #box div.main:after{
+            content: '';
+            display: block;
+            width: 0;
+            height: 1px;
+            box-shadow: 0 0 2px 2px #52b8ca;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            transition: all 2s 2s;
+        }
+        #box.hover div.main:after{
+            width: 100%;
+        }
+        #box div.main ul{
+            background: rgba(82,184,202,.6);
+            display: block;
+            list-style: none;
+            position: absolute;
+            top:45px;
+            width: 100%;
+            text-align: left;
+            box-shadow: 1px 1px 4px #000;
+            padding: 5px 0;
+            border-bottom-left-radius:10px ;
+            border-bottom-right-radius:10px ;
+        }
+        #box div.main ul,#box div input{
+            opacity: 0;
+        }
+        #box.hover div ul,#box.hover div input{
+            opacity: 1;
+            transition: all 3s 4s;
+        }
+        #box div.main ul li{
+            padding-left: 15px;
+            height: 30px;
+            line-height: 30px;
+            color: rgba(255,255,255,.9);
+            font-family: simhei;
+            overflow:hidden;
+            white-space:nowrap;
+            text-overflow:ellipsis;
+            padding-right: 50px;
+            position: relative;
+            cursor: pointer;
+        }
+        #box div.main ul li:not(:last-of-type){
+            border-bottom: 1px dashed #000000;
+        }
+        #box div.main ul li:hover{
+            color: #52b8ca !important;
+            text-shadow: 0 1px 1px white,0 -1px #000;
+            background: #000000;
+        }
+        #box div.main ul li:hover:after{
+            content: 'enter';
+            display: block;
+            position: absolute;
+            right: 5px;
+            top: 0;
+        }
+        .text{
+            color: #52b8ca !important;
+            text-shadow: 0 1px 1px white,0 -1px #000;
+            background: #000000;
+        }
+        .text:after{
+            content: 'enter';
+            display: block;
+            position: absolute;
+            right: 5px;
+            top: 0;
+        }
+        .none{
+            background: rgba(0,0,0,.8);
+            text-align: center;
+        }
+        #box .btn{
+            display: block;
+            width: 80%;
+            margin: 0 auto;
+            height: 50px;
+            background: #52b8ca;
+            line-height: 50px;
+            text-align: center;
+            border-radius: 10px;
+            color: #000000;
+            font-weight: bold;
+            font-family: simhei;
+            font-size: 30px;
+            text-shadow: 0 1px 1px white,0 -1px #000;
+            box-shadow: 2px 2px 3px #ccc;
+            z-index: 4;
+            position: relative;
+            cursor: pointer;
+            opacity: 1;
+            transition:opacity 1s  .5s, transform 2s;
+            transform:scale(1)  translateY(0);
+        }
+        #box.hover .btn{
+            opacity: 0;
+            transform: scale(0) translateY(200px);
+        }
+        #box .footer{
+            position: absolute;
+            top: 300px;
+            width: 100%;
+            text-align: center;
+            z-index: 4;
+            text-shadow: 0 1px 1px white,0 -1px #000;
+            color: #000000;
+            background: #52b8ca;
+            border-radius: 20px;
+            font-size: 20px;
+            padding: 10px;
+            font-family: simhei;
+        }
+        #box .footer img{
+            border-radius:50% ;
+        }
+        #box .bg{
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #000;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            transform:scale(1);
+            opacity: 1;
+            transition:opacity 1s 1s ,transform .1s 2s;
+        }
+        #box.hover .bg{
+            opacity: 0;
+            transform:scale(0);
+        }
+    </style>
+</head>
+    <div id="box" :class="{hover:start}">
+        <div class="bg"></div>
+        <div class="btn" @click="start=true" >Start</div>
+        <div class="footer" v-show="start==false">
+            <img src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png" alt="" width="80%"/>
+            <br/>
+            <br/>
+            借百度爸爸的东西，'美化'(哥们说我审美有问题 -_-|||)的一个搜索框
+        </div>
+        <div class="main">
+            <input class="text" type="text" placeholder="Search..." @keyup="get($event)" @keydown.down="chageDown()" @keydown.up.prevent="chageUp()" v-model="t1"/>
+            <ul>
+                <li v-show="myDate.length==0" class="none">暂 无 数 据 。。。</li>
+                <li v-for="(v,k) in myDate" v-text="v" :class="{text:nowIndex==k}" @click="open(v)"></li>
+            </ul>
+        </div>
+    </div>
+<script>
+    var vm = new Vue({
+        el:'#box',
+        data:{
+            myDate:[],
+            t1:'',
+            nowIndex:-1,
+            start:false
+        },
+        methods:{
+            get: function (ev) {
+                if(ev.keyCode==13){
+                    window.open('https://www.baidu.com/s?wd='+this.t1);
+                    this.t1='';
+                }
+                if(ev.keyCode==38||ev.keyCode==40)return;
+                this.nowIndex = -1;
+                this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',{
+                    wd:this.t1
+                },{
+                    jsonp:'cb'
+                }).then(function (res) {
+                   this.myDate = res.data.s;
+                }, function (res) {
+                    console.log(res.status)
+                })
+            },
+            chageDown: function () {
+                this.nowIndex++;
+                if(this.nowIndex==this.myDate.length){
+                    this.nowIndex=0;
+                }
+                this.t1=this.myDate[this.nowIndex];
+            },
+            chageUp: function () {
+                this.nowIndex--;
+                if(this.nowIndex<=-1){
+                    this.nowIndex=this.myDate.length-1;
+                }
+                this.t1=this.myDate[this.nowIndex];
+
+            },
+            open: function (v) {
+                window.open('https://www.baidu.com/s?wd='+v);
+                this.t1='';
+            }
+        }
+    });
+</script>
+<body>
+
+</body>
+</html>
