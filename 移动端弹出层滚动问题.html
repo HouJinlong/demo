@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<style type="text/css">
+			*{margin: 0; padding: 0;}
+			 html, body {
+        		height: 100%;
+		    }
+		    .overlay{
+		        position: fixed;
+		        top: 0px;
+		        left: 0px;
+		        right: 0px;
+		        bottom: 0px;
+		        /*非必须*/
+		        background-color: rgba(0, 0, 0, .8);
+			    -webkit-transition: all .4s cubic-bezier(.25, .8, .25, 1);
+			    transition: all .4s cubic-bezier(.25, .8, .25, 1);
+			    /*非必须*/
+		    }
+		    .overlay-content {
+		            height: 100%;
+		            overflow-X: scroll;  /*需要内部滚动   按需调整滚动方向*/
+		            /*overflow: hidden;     /*不需要内部滚动*/*/
+		   }
+		    .background-content{
+		        height: 100%;
+		        overflow-y: scroll;
+		    }
+		    /*非必须*/
+		    .buttons-container {
+			    position: fixed;
+			    right: 18px;
+			    bottom: 16px;
+			}
+			.button {
+			    margin-left: 10px;
+			    display: inline-block;
+			    padding: 0px 12px;
+			    border-radius: 3px;
+			    background-color: rgb(63,81,181);
+			    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+			    color: rgba(255,255,255,0.87);
+			    font-size: 14px;
+			    line-height: 36px;
+			    cursor: pointer;
+			    transition: box-shadow .4s cubic-bezier(.25,.8,.25,1),background-color .4s cubic-bezier(.25,.8,.25,1);
+			    -webkit-user-select: none;
+			    -moz-user-select: none;
+			    -ms-user-select: none;
+			    user-select: none;
+			    text-decoration: none;
+			}
+			.button i {
+			    font-size: 20px;
+			    margin-right: 8px;
+			    vertical-align: middle;
+			}
+			.hide-overlay .overlay{
+				transform: translateX(-100%);
+			}
+			.overlay p{color: #fff; }
+			p{font-size: 18px; color: #fff; line-height: 2; text-align: center; color: #000000;}
+			/*非必须*/
+			
+		</style>
+	</head>
+	<body class="hide-overlay">
+		<!--弹出层start-->
+		  <div class="overlay">
+		        <div class="overlay-content">
+		        	
+		        </div>
+		  </div>
+		<!--弹出层end-->
+		<!--实际内容 start-->
+		  <div class="background-content">
+		      
+		  </div>
+		<!--实际内容 end-->  
+		  <!--/*非必须*/-->
+		<div class="buttons-container">
+		<a class="button" onclick="goTop()">回到顶部</a>
+		<a class="button" onclick="toggleOverlay()">弹出层</a>
+		</div>
+		 <!--/*非必须*/-->
+		 <script src="https://staticfile.qnssl.com/jquery/1.7/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		 <script type="text/javascript">
+		 	function init () {
+		 		var overlay='',background='';
+		 		for (var i=0;i<100;i++) {
+		 			overlay += '<p>我是弹出层' + i +'</p>';
+		 			background += '<p>我是实际' + i +'</p>';
+		 		}
+		 		document.getElementsByClassName('overlay-content')[0].innerHTML=overlay;
+		 		document.getElementsByClassName('background-content')[0].innerHTML=background;
+		 	}
+		 	init();
+		 	function toggleOverlay () {
+			    var overlay = document.querySelector("body");
+			    overlay.classList.toggle('hide-overlay');
+			}
+		 	function goTop () {
+			    var overlay = document.querySelector("body"),className,timer = null;
+			     if(overlay.classList.contains('hide-overlay')){
+			     	className = 'background-content';
+			     }else{
+			     	className = 'overlay-content';
+			     }
+			     cancelAnimationFrame(timer);
+			   timer = requestAnimationFrame(function fn(){
+				var oTop = document.getElementsByClassName(className)[0].scrollTop ;
+					if(oTop > 0){
+						document.getElementsByClassName(className)[0].scrollTop = oTop - 50;
+						timer = requestAnimationFrame(fn);
+					}else{
+						cancelAnimationFrame(timer);
+					} 
+				});
+			}
+		 </script>
+	</body>
+</html>
