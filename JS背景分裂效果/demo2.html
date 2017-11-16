@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1109test</title>
+    <style>
+        .container{
+            margin: 100px auto;
+            line-height: 0;
+            font-size: 0;
+            overflow: hidden;
+            border: 1px solid #000000;
+        }
+        .container div{
+            width: 50px;
+            height: 50px;
+            background-image: url("http://cdn.attach.qdfuns.com/notes/pics/201711/14/155033sauj7xrjahjxjpjd.png");
+            /*background-repeat: no-repeat;*/
+            display: inline-block;
+            position: relative;
+            top: 0;
+            left: 0;
+            transition: all 1s;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+</div>
+<div class="container">
+</div>
+<script>
+			function BgSplit (el,elWH,sum) {
+				this.el=el;
+				this.elWH=elWH;
+				this.sum=sum;
+				this.elSunW=(elWH/sum);
+				this.init=function  () {
+					this.el.style.width=this.elWH + 'px';
+					this.el.style.height=this.elWH + 'px';
+					var sum = this.sum;
+					console.log(this.elSunW)
+					 var divs = [],arr=[];
+					 for (var i = 0; i < (sum*sum); i ++) {
+				        var num = Math.floor(Math.random()*200 - 100),div = document.createElement("div"),x,y;
+				        div.style.width = this.elSunW + "px";
+				        div.style.height = this.elSunW + "px";
+				        div.style.backgroundSize=this.elWH + 'px';
+				        var x =  -i%sum*this.elSunW; 
+				        var y =  -Math.floor(i/sum)*this.elSunW; 
+				        if(x==y){
+				        	arr.push(i)
+				        }
+				        div.style.backgroundPosition = x + "px " + y + "px";
+				        this.el.appendChild(div);
+				        divs.push({
+				        	'el':div,
+				        	'x' : x,
+				        	'y' : y
+				        })
+				    }
+//					 console.log(arr)
+//					 console.log((sum-1)/2*sum + (sum-1)/2) 取最中间的
+				 	this.el.onmouseout = function () {
+				 		divs[(sum-1)/2*sum + (sum-1)/2].zindex='999';
+				      for (var i = 0; i <  (sum*sum); i ++) {
+				          divs[i].el.style.transform = 'translate(0,0)';
+				          divs[i].el.style.opacity = 1;
+				      }
+					};	 
+					 this.el.onmousemove = function () {
+							var x =  divs[(sum-1)/2*sum + (sum-1)/2].x;
+							var y = divs[(sum-1)/2*sum + (sum-1)/2].y;
+					      for (var i = 0; i < (sum*sum); i ++) {
+					      	    divs[i].el.style.transform = 'translate('+-(divs[i].x-x)+'px,'+-(divs[i].y-y)+'px)';
+					      	    divs[i].el.style.opacity = 0;
+					      }
+					 };
+				}
+				this.init();
+				return this;
+			}
+			//最后实例化
+			var obj3=new BgSplit(document.getElementsByClassName("container")[0],500,5);
+			var obj3=new BgSplit(document.getElementsByClassName("container")[1],500,11);
+</script>
+</body>
+</html>

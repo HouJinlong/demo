@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1109test</title>
+    <style>
+        .container{
+            margin: 200px auto;
+            width: 350px;
+            height: 350px;
+            line-height: 0;
+            font-size: 0;
+        }
+        .container div{
+            width: 50px;
+            height: 50px;
+            background-image: url("http://cdn.attach.qdfuns.com/notes/pics/201711/14/155033sauj7xrjahjxjpjd.png");
+            /*background-repeat: no-repeat;*/
+            display: inline-block;
+            position: relative;
+            top: 0;
+            left: 0;
+            transition: all 0.5s;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+</div>
+<div class="container">
+</div>
+<script>
+			function BgSplit (el,elWH,sum) {
+				this.el=el;
+				this.elWH=elWH;
+				this.sum=sum;
+				this.elSunW=(elWH/sum);
+				this.init=function  () {
+					this.el.style.width=this.elWH + 'px';
+					this.el.style.height=this.elWH + 'px';
+					var sum = this.sum;
+					console.log(this.elSunW)
+					 var divs = [];
+					 for (var i = 0; i < (sum*sum); i ++) {
+				        var num = Math.floor(Math.random()*200 - 100),div = document.createElement("div"),x,y;
+				        div.style.top = num + "px";
+				        div.style.left = num + "px";
+				        div.style.width = this.elSunW + "px";
+				        div.style.height = this.elSunW + "px";
+				        div.style.backgroundSize=this.elWH + 'px';
+				        div.style.backgroundPosition =  -i%sum*this.elSunW + "px " + -Math.floor(i/sum)*this.elSunW + "px";
+				        this.el.appendChild(div);
+				        divs.push(div)
+				    }
+				 	this.el.onmouseenter = function () {
+				      for (var i = 0; i <  (sum*sum); i ++) {
+				           divs[i].style.top = 0 + "px";
+					          divs[i].style.left = 0 + "px";
+				     }
+					};	 
+					 this.el.onmouseleave = function () {
+					      for (var i = 0; i < (sum*sum); i ++) {
+					      	var num = Math.floor(Math.random()*200 - 100);
+					          divs[i].style.top = num + "px";
+					          divs[i].style.left = num + "px";
+					      }
+					
+					 };
+				}
+				this.init();
+				return this;
+			}
+			//最后实例化
+			var obj3=new BgSplit(document.getElementsByClassName("container")[0],500,5);
+			var obj4=new BgSplit(document.getElementsByClassName("container")[1],200,5);
+</script>
+</body>
+</html>
