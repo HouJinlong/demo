@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>手写签名</title>
+</head>
+<body id="bb">
+<style type="text/css">
+	#bb{
+		text-align: center;
+	}
+	#canvasDiv{
+		border: 5px solid #ddd;
+		height: 300px;
+		width: 600px;
+		margin: 0 auto;
+	}
+</style>
+<div id="canvasDiv" ></div>
+
+<br>
+<br>
+	用户手写签名后，点击提交，我们会把签名生成图片保存下来， 这一步完成后用户就进入抽奖环节
+<br>
+<br>
+<button id="btn_clear">清除</button>
+
+<a href="javascript:;" id="btn_submit">提交</a>
+
+<script language="javascript">
+
+   
+
+function onDocumentTouchStart( event ) {
+    if( event.touches.length == 1 ) {
+        event.preventDefault();
+        var now = new Date().getTime();
+        if ( now - timeOfLastTouch  < 250 ) {
+            reset();
+            return;
+        }
+        timeOfLastTouch = now;
+        mouseX = event.touches[ 0 ].pageX;
+        mouseY = event.touches[ 0 ].pageY;
+        isMouseDown = true;
+    }
+}
+
+function onDocumentTouchMove( event ) {
+    if ( event.touches.length == 1 ) {
+        event.preventDefault();
+        mouseX = event.touches[ 0 ].pageX;
+        mouseY = event.touches[ 0 ].pageY;
+    }
+}
+function onDocumentTouchEnd( event ) {
+    if ( event.touches.length == 0 ) {
+        event.preventDefault();
+        isMouseDown = false;
+    }
+}
+var canvasDiv = document.getElementById("canvasDiv");
+var canvas = document.createElement('canvas');
+var canvasWidth = 600;
+var canvasHeight=300;
+document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+var point = {};
+point.notFirst = false;
+canvas.setAttribute('width', canvasWidth);
+canvas.setAttribute('height', canvasHeight);
+canvas.setAttribute('id', 'canvas');
+canvasDiv.appendChild(canvas);
+if(typeof G_vmlCanvasManager != 'undefined') {
+	canvas = G_vmlCanvasManager.initElement(canvas);
+}
+var context = canvas.getContext("2d");
+var img = new Image();
+img.src = "./a.jpg";
+img.onload = function(){
+    var ptrn = context.createPattern(img,'no-repeat');
+	context.fillStyle = ptrn;
+	context.fillRect(0, 0, canvas.width, canvas.height);
+}
+canvas.addEventListener("touchstart", function(e){
+  var mouseX = e.pageX - this.offsetLeft;
+  var mouseY = e.pageY - this.offsetTop;
+  paint = true;
+  addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+  redraw();
+});
+canvas.addEventListener("touchend", function(e){
+   paint = false;
+});
+canvas.addEventListener("touchmove", function(e){
+ if(paint){
+    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+    redraw();
+  }
+});
+canvas.addEventListener("mousedown", function(e){
+  var mouseX = e.pageX - this.offsetLeft;
+  var mouseY = e.pageY - this.offsetTop;
+  paint = true;
+  addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
+  redraw();
+});
+canvas.addEventListener("mousemove", function(e){
+  if(paint){
+    addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+    redraw();
+  }
+});
+
+canvas.addEventListener("mouseup", function(e){
+  paint = false;
+});
+canvas.addEventListener("mouseleave", function(e){
+  paint = false;
+});
+var clickX = new Array();
+var clickY = new Array();
+var clickDrag = new Array();
+var paint;
+function addClick(x, y, dragging)
+{
+  clickX.push(x);
+  clickY.push(y);
+  clickDrag.push(dragging);
+}
+function redraw(){
+  context.strokeStyle = "#df4b26";
+  context.lineJoin = "round";
+  context.lineWidth = 2;
+  while (clickX.length > 0 ) {
+	  point.bx = point.x;
+	  point.by = point.y;
+	  point.x = clickX.pop();
+	  point.y = clickY.pop();
+	  point.drag = clickDrag.pop();
+	  context.beginPath();
+	  if (point.drag && point.notFirst) {
+		  context.moveTo(point.bx, point.by);
+	  } else {
+		  point.notFirst = true;
+		  context.moveTo(point.x - 1, point.y);
+	  }
+     context.lineTo(point.x, point.y);
+     context.closePath();
+     context.stroke();
+  }
+}
+var clear = document.getElementById("btn_clear");
+var submit = document.getElementById("btn_submit");
+clear.addEventListener("click", function(){
+	canvas.width = canvas.width;
+});
+submit.addEventListener("click", function(){
+//	document.getElementById("qmimg").setAttribute('src',canvas.toDataURL("image/png"))
+});
+</script>
+<img  id="qmimg"  />
+</body>
+
+</html>
+
+
+
+
+
+
