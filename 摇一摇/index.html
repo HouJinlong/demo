@@ -61,6 +61,9 @@
                     z = acceleration.z;
                      var speed = Math.abs(x +y + z - last_x - last_y - last_z) / diffTime * 10000;
                      if (speed > SHAKE_THRESHOLD) {
+                        window.navigator.vibrate([
+    100,30,100,30,100,200,200,30,
+        200,30,200,200,100,30,100,30,100]);
                         document.getElementById("body").innerHTML = a;
                             a++;    
                      }
