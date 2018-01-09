@@ -1,76 +1,51 @@
-<!doctype html>  
-<html>  
-    <head>  
-    <meta charset="utf-8" />  
-    <meta name="viewport" content="width=device-width,initial-scale=1.0"/>  
-    <title>HTML5 手机摇一摇</title>  
-
-        <style>
-            #body{
-                text-align: center;
+<html>
+    <head>
+        <title></title>
+        <style type="text/css">
+            body{
                 line-height: 100vh;
                 font-size: 50px;
+                text-align: center;
                 font-weight: bold;
             }
         </style>
-    </head>  
-    <body id='body'>  
-             
-    </body>
-    <script type="text/javascript">  
-            // var a = 0;
-            // var color = new Array('#fff', '#ff0', '#f00', '#000', '#00f', '#0ff');  
-            // if(window.DeviceMotionEvent) {  
-            //     var speed = 25;  
-            //     var x = y = z = lastX = lastY = lastZ = 0;  
-            //     window.addEventListener('devicemotion', function(){  
-                   
-            //         var acceleration =event.accelerationIncludingGravity;  
-            //         x = acceleration.x;  
-            //         y = acceleration.y;  
-            //         if(Math.abs(x-lastX) > speed || Math.abs(y-lastY) > speed) {  
-            //             document.body.style.backgroundColor = color[Math.round(Math.random()*10)%6];  
-            //              document.getElementById("body").innerHTML = a;
-            //                  a++;
-            //         }  
-            //         lastX = x;  
-            //         lastY = y;  
-            //     }, false);  
-            // }  
-                     //运动事件监听
-         if (window.DeviceMotionEvent) {
-              window.addEventListener('devicemotion',deviceMotionHandler,false);
-         }
+    </head>
+    <body>
+        
+        <script src="https://staticfile.qnssl.com/jquery/1.7/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript">
+            $(document).ready(function() { 
+          var a= 0;
+         //判断系统是否支持html5摇一摇的相关属性 
+        if (window.DeviceMotionEvent){ 
+                var speed = 25; 
          
-         //获取加速度信息
-         //通过监听上一步获取到的x, y, z 值在一定时间范围内的变化率，进行设备是否有进行晃动的判断。
-         //而为了防止正常移动的误判，需要给该变化率设置一个合适的临界值。
-         var SHAKE_THRESHOLD = 4000;
-         var last_update = 0;
-         var x, y, z, last_x = 0, last_y = 0, last_z = 0;
-         var a = 0;
-          document.getElementById("body").innerHTML = a;
-        function deviceMotionHandler(eventData) {
-                var acceleration =eventData.accelerationIncludingGravity;
-                 var curTime = new Date().getTime();
-                 if ((curTime-last_update)> 10) {
-                     var diffTime = curTime -last_update;
-                     last_update = curTime;
-                     x = acceleration.x;
-                    y = acceleration.y;
-                    z = acceleration.z;
-                     var speed = Math.abs(x +y + z - last_x - last_y - last_z) / diffTime * 10000;
-                     if (speed > SHAKE_THRESHOLD) {
-                        window.navigator.vibrate([
-    100,30,100,30,100,200,200,30,
-        200,30,200,200,100,30,100,30,100]);
-                        document.getElementById("body").innerHTML = a;
-                            a++;    
-                     }
-                     last_x = x;
-                    last_y = y;
-                    last_z = z;
-                }
-        }
-        </script>    
-</html>  
+                var x = t = z = lastX = lastY = lastZ = 0; 
+                window.addEventListener('devicemotion', 
+                function () { 
+                        var acceleration = event.accelerationIncludingGravity; 
+                        x = acceleration.x; 
+                        y = acceleration.y; 
+                        if (Math.abs(x - lastX) > speed || Math.abs(y - lastY) > speed) { 
+                                 
+                                 a++;
+                                 //手机震动1秒 
+                if (navigator.vibrate) { 
+                    navigator.vibrate(1000);//震动1000毫秒 
+                } else if (navigator.webkitVibrate) { 
+                    navigator.webkitVibrate(1000); 
+                } 
+                                 
+                               $('body').html(a);
+                        }; 
+                        lastX = x; 
+                        lastY = y; 
+                },false); 
+        } 
+        else { 
+        alert('not support mobile event'); 
+    } 
+}); 
+        </script>
+    </body>
+</html>
