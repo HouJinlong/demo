@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0"/>  
     <title>HTML5 手机摇一摇</title>  
         <script type="text/javascript">  
+            var a = 0;
             var color = new Array('#fff', '#ff0', '#f00', '#000', '#00f', '#0ff');  
             if(window.DeviceMotionEvent) {  
                 var speed = 25;  
                 var x = y = z = lastX = lastY = lastZ = 0;  
                 window.addEventListener('devicemotion', function(){  
+                    document.getElementById("body").innerHTML = a;
+                    a++;
                     var acceleration =event.accelerationIncludingGravity;  
                     x = acceleration.x;  
                     y = acceleration.y;  
@@ -21,8 +24,16 @@
                 }, false);  
             }  
         </script>  
+        <style>
+            #body{
+                text-align: center;
+                line-height: 100vh;
+                font-size: 50px;
+                font-weight: bold;
+            }
+        </style>
     </head>  
-    <body>  
-             手机摇一摇，改变屏幕颜色。  
+    <body id='body'>  
+             
     </body>  
 </html>  
