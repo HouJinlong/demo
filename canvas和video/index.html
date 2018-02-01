@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type">
+	<meta content="text/html; charset=utf-8">
+	<meta charset="utf-8">
+	<title>Michael王今早赶飞机迟到了</title>
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="format-detection" content="email=no">
+	<meta name="screen-orientation" content="portrait">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <script src="http://js.zuchecdn.com/sales/common/jquery-2.1.4.min.js"></script>
+	<!-- <link rel="stylesheet" href="index.css">
+        <script type="text/javascript" src="https://mktjs.10101111cdn.com/common/jquery/jquery-2.1.3.min.js"></script> -->
+    <link type="text/css" rel="stylesheet" href="https://mktcss.10101111cdn.com/common/dialog_1215.css"/>
+    <link type="text/css" rel="stylesheet" href="https://mktcss.10101111cdn.com/wap/2018/airport180129/index.css">
+
+	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript" src="https://mktjs.10101111cdn.com/common/weixin.js"></script>
+    <script type="text/javascript" src="https://mktjs.10101111cdn.com/common/unweixin.js"></script>
+    <script type="text/javascript" src="https://mktjs.10101111cdn.com/common/core.js"></script>
+
+    <script>
+        var mktjs = "https://mktjs.10101111cdn.com";
+        var mktcss = "https://mktcss.10101111cdn.com";
+        var mktimage = "https://mktimage.10101111cdn.com";
+        var origin = "tour100";
+            getWeixinShareData();
+    </script>
+    <script>!function(a,b,c,d,e){a[c]=a[c]||{},a[c].id=d;var f=b.createElement("script");f.src="https://lc.ucarinc.com/lc.js";var g=b.getElementsByTagName("script")[0];g.parentNode.insertBefore(f,g),a[c].types=e;for(var h=0;h<a[c].types.length;h++)if("pe"==a[c].types[h]){var i=[];a.onerror=function(b,d,e,f){i.push("m="+b+"&u="+d+"&l="+e+"&r="+f),a[c].initPe=i.join(",")};break}}(window,document,"LCTJ","dcffffff",["rc","pe"]);
+    </script>
+</head>
+<body>
+    <section class="tipplayer" style="display: none">
+        <p>请在竖屏模式查看</p>
+    </section>
+
+    <section class="loading">
+        <div class="load">
+            <div class="bot">
+                <div class="pic">
+                    <img src="https://mktimage.10101111cdn.com/wap/2018/airport180129/loading.gif" alt="">
+                </div>
+                <div class="progress">
+                    <span class="bar"></span>
+                </div>
+                <p class="text"></p>
+            </div>
+        </div>
+    </section>
+
+        <video id="video" src="https://img01.10101111cdn.com/mkt/bak/2018/download/video/tour100_1.mp4" preload="auto" width='100%' height="100%" webkit-playsinline="true" controls poster="https://mktimage.10101111cdn.com/wap/2018/airport180129/poster.png"></video>
+
+    <section class="main" style="display: none;position: absolute;top: 0;left: 0;right: 0;bottom: 0;margin: auto;">
+        <div class="con">
+            <div class="logo">
+                <img src="https://mktimage.10101111cdn.com/wap/2018/airport180129/logo.png" alt="">
+            </div>
+
+            <div class="btns">
+                <a class="sharebtn xxx">
+                    <img src="https://mktimage.10101111cdn.com/wap/2018/airport180129/btn_xxx.png" alt="">
+                </a>
+                <a href="http://mktm.10101111.com/html5/2015/download/index.html?szhdbm=MK.MichaelWang_180130" class="downloadbtn ta">
+                    <img src="https://mktimage.10101111cdn.com/wap/2018/airport180129/btn_ta.png" alt="">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="share"  style="display: none">
+        <img src="https://mktimage.10101111cdn.com/wap/2018/airport180129/icon_share.png" alt="">
+    </section>
+	<script src="VideoToCanvas.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+		
+       
+        var  video = document.getElementById("video"),
+            $loading = $('.progress span'),
+            $video = $(video),
+            $share = $('.share'),
+            $shareBtn = $('.sharebtn'),
+            $downloadBtn = $('.downloadbtn');
+
+
+		var cVideo =  new VideoToCanvas(video);
+		
+        var percent = 0;
+
+        addPercent();
+
+        $video.on('ended', function () {
+
+            console.log('Video Ended');
+            
+            $('.media').hide();
+            $('.main').show();
+
+        });
+
+        $shareBtn.on('click', function(evt) {
+
+            evt.preventDefault();
+
+            $share.show();
+
+        });
+
+        $share.on('click', function(evt) {
+
+            $share.hide();
+
+        });
+
+        /*$downloadBtn.on('click', function(evt) {
+
+            evt.preventDefault();
+
+            downloadApp();
+
+        });*/
+
+        $(window).on('load orientationchange', function(evt) {
+
+            orientationchange(evt, renderDirTip);
+
+        });
+
+        function addPercent() {
+
+            if (percent > 100) {
+                clearTimeout(timeId);
+				//将video 转化为canvas
+				 cVideo.play();
+                $('.loading').hide();
+                $('.media').show();
+				
+                return;
+            }
+
+            $('.progress .bar').css('width', percent + '%');
+            $('.bot .text').text(percent + '%');
+
+            console.log('Percent[', percent, ']');
+
+            var timeId = setTimeout(addPercent, 30);
+
+            percent += 1;
+        }
+
+        function downloadApp() {
+
+            var tdpg = getUrlParams('tdpg'),
+                tdaz = getUrlParams('tdaz'),
+                m = window.location.search;
+
+            if(tdaz || tdpg){
+                window.location.href="/html5/2015/app/mobileapp.html"+m;
+            }else{
+                window.location.href="/html5/2015/app/mobileapp.html";
+            }
+        }
+
+        // 屏幕方向
+        function orientationchange(evt, callback) {
+
+            var orientation = window.orientation == null ? screen.orientation.angle : window.orientation,
+                dir = '';
+
+            //console.log('Screen Orientation: ', orientation);
+
+            if (orientation != null) {
+
+                if (orientation === 90 || orientation === -90) {
+                    dir = 'horizontal';
+                } else {
+                    dir = 'vertical';
+                }
+            }
+
+            //console.log('Dir: ', callback);
+
+            if (checkDataType(callback) === 'function') {
+                console.log('Dir: ', dir);
+                callback(dir);
+            }
+
+            return dir;
+        }
+
+        // 数据类型检查
+        function checkDataType(data) {
+
+            var type = typeof data,
+                toStr = Object.prototype.toString;
+
+            if (type !== 'object') {
+                return type;
+            }
+
+            type = toStr.call(data).slice(8, -1).toLowerCase();
+
+            return type;
+        }
+
+        function renderDirTip(dir) {
+
+            // var changeable = cache.dirChangeable;
+
+            //console.log('Dir callback: ', dir);
+            /*if (!changeable) {
+                return;
+            }*/
+
+            if (dir === 'horizontal') {
+                $('.media video').hide();
+                $('.media video')[0].pause();
+                $('.tipplayer').show();
+            } else {
+                $('.media video').show();
+                //$('.media video')[0].pause();
+                $('.tipplayer').hide();
+            }
+        }
+
+        // 获取url的search参数
+        function getUrlParams(str) { // str： 查询参数名称, str=1234
+
+            var search = decodeURIComponent(window.location.search),
+                parameters = search.slice(1).split('&'),
+                paramObj = {};
+
+            if (search === '') { // 现有链接无search参数
+                return {};
+            }
+
+            parameters.forEach(function(ele, idx, arr) {
+
+                var prop = ele.split('=')[0],
+                    val = ele.split('=')[1];
+
+                paramObj[prop] = val;
+
+            });
+
+            if (str) {
+                return paramObj[str];
+            }
+
+            return paramObj;
+        }
+
+    </script>
+</body>
+</html>
